@@ -43,6 +43,16 @@
 \contentsline {subsubsection}{\numberline {3.3.1}task\_struct}{9}{subsubsection.3.3.1}%
 \contentsline {subsubsection}{\numberline {3.3.2}系统堆栈}{9}{subsubsection.3.3.2}%
 \contentsline {section}{\numberline {4}操作命令}{10}{section.4}%
-\contentsline {subsection}{\numberline {4.1}有关线程}{10}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.1}有关进程}{10}{subsection.4.1}%
 \contentsline {subsubsection}{\numberline {4.1.1}ps 查看进程状态}{10}{subsubsection.4.1.1}%
 \contentsline {subsection}{\numberline {4.2}kill}{10}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}sleep}{11}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}fork}{11}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}exec}{11}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}wait}{12}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}exit}{12}{subsubsection.4.2.5}%
+\contentsline {subsubsection}{\numberline {4.2.6}getpid}{12}{subsubsection.4.2.6}%
+\contentsline {subsubsection}{\numberline {4.2.7}getppid}{12}{subsubsection.4.2.7}%
+\contentsline {subsubsection}{\numberline {4.2.8}nice}{12}{subsubsection.4.2.8}%
+\contentsline {section}{\numberline {5}系统调用的使用方式}{12}{section.5}%
+\contentsline {subsection}{\numberline {5.1}}{12}{subsection.5.1}%

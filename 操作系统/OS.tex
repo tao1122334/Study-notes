@@ -213,7 +213,7 @@ subsubsection{终止进程 primitive}
 另外，系统空间堆栈的大小是静态确定的，而用户空间堆栈可以在运行时动态扩展。
 
 \section{操作命令}
-\subsection{有关线程}
+\subsection{有关进程}
 \subsubsection{ps 查看进程状态}
 PID：进程标识号
 
@@ -257,6 +257,60 @@ STIME：进程开始时间，格式为 小时：分
 接收信号的进程在运行过程中要检测自身是否收到了信号，如果已收到信号，则转去执行预先规定好的信号处理程序。处理之后，再返回原先正在执行的进程。
 
 可以通过ctrl+c来终止进程，也可以用kill.但对于一个后台进程只能用kill来终止。
+
+-s：指定要发送的信号，可以是信号名也可以是对应信号的编号
+
+-p：显示进程所属的进程组号
+
+-l：显示信号名列表，这也可以在/usr/include/linux/signal.h文件中找到
+
+\textbf{1.使用kill时如果没带信号会默认使用编号15信号杀死程序}
+
+\textbf{2.撤销时kill必须是有足够的权限，撤销一个不存在的或者无权限的进程将会报错}
+
+\textbf{3.终端会显示信息，有时要按enter后才显示}
+
+\textbf{4.可以输入多个pid}
+
+\textbf{5.可以使用kill 0 来撤销当前shell运行的所有进程，省去搜索进程号的麻烦}
+
+\subsubsection{sleep}
+sleep 100 单位为秒
+\subsubsection{fork}
+\textbf{pid\_t}为有符号整型量
+在父进程中返回子进程的PID（>0）,在子进程中返回0，失败则返回-1
+
+\subsubsection{exec}
+
+execve才是真正执行的函数，其他都是包装过的库函数。作用为更换进程映像，根据指定文件名找到可执行文件，并用它来取代调用进程的内容。
+
+argv和envp分别是传给被执行文件的命令行参数数组和环境变量数组
+
+arg：命令行单个参数
+
+path：表示完整路径
+
+file：自动在环境变量寻找该文件
+
+\subsubsection{wait}
+\subsubsection{exit}
+status：进程退出时的状态
+
+\_exit函数比exit简单，仅仅是终止进程
+
+exit需要检查文件的打开情况，清理I/O缓存才退出
+\subsubsection{getpid}
+返回该进程pid
+\subsubsection{getppid}
+返回父进程pid
+\subsubsection{nice}
+
+\section{系统调用的使用方式}
+在linux/unix系统中，系统调用和库函数都是以C函数的形式提供给用户的，头文件一般放在/usr/include/sys或者/usr/include/linux目录下。
+
+虽然系统调用类似库函数调用，但库函数属于用户层，只能在用户态运行不能进入核心态。系统调用属于操作系统的核心层，在核心态运行，而且可以实现处理机从用户态到核心态的转变。
+
+\subsection{}
 
 
 \clearpage
