@@ -1,5 +1,15 @@
 \documentclass{ctexart}
 \usepackage[colorlinks=true,linkcolor=black]{hyperref}
+\usepackage{listings}
+
+\lstset{
+    language=C,                      % 代码语言
+    keywordstyle=\color{blue},       % 关键词颜色
+    numbers=left,                    % 显示行号
+    numberstyle=\tiny,               % 行号样式
+    stepnumber=1                     % 行号递增步长
+}
+
 
 \title{操作系统}
 \author{陶}
@@ -293,6 +303,53 @@ path：表示完整路径
 file：自动在环境变量寻找该文件
 
 \subsubsection{wait}
+wait（int* status）等待任何要僵死的进程，有关子进程退出时的一些状态保存在参数status中。若成功返回该终止进程的PID，否则返回-1.
+
+如果出现没有子进程需要等待退出、调用wait的进程没有子进程等待退出等情况，wait函数会返回-1并设置errno为一个对应的错误值，可以通过检查errno来获取更具体的错误信息。
+
+有多个子进程同时退出（如子进程很多），wait函数将会返回任意一个已经退出的子进程的PID。这种情况下，父进程可以通过循环调用wait函数，直到所有子进程都被处理完毕。
+
+因为wait函数只能等待一个子进程的退出，所以在处理多个子进程退出的情况下，父进程可能需要在循环中反复调用wait函数。每次调用wait函数都会返回一个已经退出的子进程的PID，直到全部子进程都被处理完毕为止。
+
+waitpid(pid\_t pid, int* status, int option); 
+
+pid：
+
+等待任意子进程： 如果将 pid 设置为 -1，表示等待任意子进程退出。这在父进程不关心具体子进程是哪个时非常有用。
+
+等待同一进程组的任意子进程： 如果将 pid 设置为 0，表示等待与调用进程在同一进程组的任何子进程。这对于处理一组相关的子进程很有用。
+
+等待指定进程ID的子进程： 如果将 pid 设置为具体的进程ID，表示等待具有该进程ID的子进程退出。这允许父进程有选择地等待特定的子进程。
+
+option规定了该调用的行为：
+
+WNOHANG (1): 如果指定了这个选项，并且没有子进程处于需要等待的状态，waitpid 将立即返回0，而不会阻塞父进程。
+
+WUNTRACED (2): 此选项用于报告已经停止的子进程。如果子进程被暂停（例如，收到了SIGSTOP信号），但尚未终止，则返回其pid，将父进程status设置为相应（如阻塞）状态。
+
+WCONTINUED (4): 此选项用于报告已经继续运行的子进程。如果子进程之前被停止，现在又继续运行了，waitpid 将返回其pid， 将父进程status设置为相应状态。
+
+可以对它们执行逻辑‘或’
+
+\begin{lstlisting}
+    if (WIFEXITED(status)) {
+        // Child process exited normally
+        int exit_status = WEXITSTATUS(status);
+        // Handle exit status
+    } else if (WIFSIGNALED(status)) {
+        // Child process terminated due to a signal
+        int signal_number = WTERMSIG(status);
+        // Handle termination signal
+    } else if (WIFSTOPPED(status)) {
+        // Child process has been stopped
+        int stop_signal = WSTOPSIG(status);
+        // Handle stop signal
+    } else if (WIFCONTINUED(status)) {
+        // Child process resumed execution
+        // Handle the case of resumption
+    }
+\end{lstlisting}
+
 \subsubsection{exit}
 status：进程退出时的状态
 
@@ -310,7 +367,137 @@ exit需要检查文件的打开情况，清理I/O缓存才退出
 
 虽然系统调用类似库函数调用，但库函数属于用户层，只能在用户态运行不能进入核心态。系统调用属于操作系统的核心层，在核心态运行，而且可以实现处理机从用户态到核心态的转变。
 
-\subsection{}
+\begin{lstlisting}
+    #include <unistd.h>
+    #include <sys/types.h>
+    #include <stdio.h>
+    int main(int argc, char *argv[]){
+        int pid;
+        pid = fork();
+        if (pid < 0) {
+            fprintf(stderr, "Fork failed");
+            exit(1);
+        }
+        else if (pid == 0) {
+            execlp ("/bin/ls", "ls", NULL); //execlp (const char *file, const char *arg, ... )
+        }
+        else {
+            wait(NULL);
+            printf("Child Complete");
+            exit(0);
+        }
+    }
+\end{lstlisting}
+
+除了0外，任何进程都必须有父进程，如果父进程先于子进程死亡或退出，则子进程会被指定一个新的父进程init（其PID为1）
+\clearpage
+\section{竞争}
+\subsection{竞争条件}
+假定进程P\textsubscript{a}负责为用户分配打印机，P\textsubscript{b}负责释放打印机。系统中设立一个打印机分配表，由各个进程共用。
+\begin{table}[h]  % 放置表格的位置，可选参数[h]表示“here”
+    \centering     % 居中
+    \caption{打印机分配表（初始情况）}  % 表格标题
+    \begin{tabular}{|c|c|c|c|}  % 列的格式：居中对齐（c），竖线表示纵向边框
+        \hline
+        \textbf{打印机编号} & \textbf{分配标志} & \textbf{用户名} & \textbf{用户定义的设备名} \\  % 表头
+        \hline
+        0 & 1 & Meng & PRINT \\  % 表格内容
+        \hline
+        1 & 0 &  &\\
+        \hline
+        2 & 1 & Liu & OUTPUT \\
+        \hline
+    \end{tabular}
+\end{table}
+
+
+
+P\textsubscript{a}进程分配打印机的过程：
+
+1.逐项检查分配标志，找出标志为0的打印机号码
+
+2.把该打印机的分配标志置为1
+
+3.把用户名和设备名填入分配表中相应位置
+
+P\textsubscript{b}进程释放打印机的过程：
+
+1.逐项检查分配表的各项信息，找出分配标志为1且用户名设备名与被释放的名字相同的打印机编号。
+
+2.将该打印机的分配标志置位0
+
+3.清除该打印机的用户名和设备名
+
+如果P\textsubscript{a} P\textsubscript{b}并行，以以下顺序执行：
+
+P\textsubscript{b}：
+
+1.查分配表，找到分配标志为1，用户名为MENG，设备名为PRINT的打印机。（为0号打印机）
+
+2.将0号打印机的分配标志置为0
+
+P\textsubscript{a}：
+
+1.逐项检查分配标志，找出标志为0的打印机号码（0号打印机）
+
+2.把该打印机的分配标志置为1
+
+3.把用户名Zhang和设备名LP填入分配表中相应位置
+
+P\textsubscript{b}：
+
+3.清除0号打印机的用户名和设备名
+
+结果:
+\begin{table}[h]  % 放置表格的位置，可选参数[h]表示“here”
+    \centering     % 居中
+    \caption{打印机分配表（出错情况）}  % 表格标题
+    \begin{tabular}{|c|c|c|c|}  % 列的格式：居中对齐（c），竖线表示纵向边框
+        \hline
+        \textbf{打印机编号} & \textbf{分配标志} & \textbf{用户名} & \textbf{用户定义的设备名} \\  % 表头
+        \hline
+        0 & 1 &  &  \\  % 表格内容
+        \hline
+        1 & 0 &  &\\
+        \hline
+        2 & 1 & Liu & OUTPUT \\
+        \hline
+    \end{tabular}
+\end{table}
+最后0号机无法被释放，也无法被再次使用。
+
+当两个进程同时访问和操纵相同的数据时，最后的执行结果取决于进程运行的精确时序，这种情况被称为\textbf{竞争条件}（race condition）
+
+\subsection{临界资源 critical resource}
+打印机，读卡机，公共变量，表格等资源都是临界资源，也就是独占型资源。
+\subsection{临界区 critical section CS}
+每个进程访问临界区的那段程序叫临界区。
+\section{进程通信}
+\subsection{同步}
+在上一道工序未完成或加工质量不合格时，下一道工序不能继续下去。
+\subsection{互斥}
+汽车在岔口争用车道
+
+实现机制：
+
+\textbf{软件：}
+
+原语操作
+
+软件锁
+
+\textbf{硬件：}
+
+\subsubsection{禁止中断}
+
+使每个进程进入临界区后立即关闭所有的中断，在它即将离开临界区之前才开放中断。
+
+由于禁止中断，时钟中断也被禁止，不会把CPU切换到其它进程。
+
+这种把关闭中断的权利交给用户进程的方法，一旦某个进程关闭中断后，如果它不再开放中断，则系统可能会因此中止。
+
+\subsubsection{设置专用机器指令}
+
 
 
 \clearpage
