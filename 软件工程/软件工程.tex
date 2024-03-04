@@ -1,0 +1,136 @@
+\documentclass{ctexart}
+\usepackage[colorlinks=true,linkcolor=black]{hyperref}
+
+\title{软件工程}
+\author{陶}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\section{requirement}
+\label{sec:first}
+需求（requirement）描述了从客户的角度，这个系统要做什么，这个系统要提供什么服务以及它操作期间的限制。
+
+\subsection{functionality}
+\subsection{constrains}
+\subsection{goals}
+\subsection{为什么一个项目会失败}
+50\%：不足的需求定义
+
+15\%：不足的范畴定义
+
+17\%: 不足的风险管理
+
+14\%: 沟通问题
+
+3\%： 缺少有效资源
+
+1\%： 其它
+\subsection{需求的重要性}
+越晚明白需求的定义，成本就越高
+\subsection{需求来自哪里}
+应用领域：如银行的法律和规定
+Stakeholders：利害关系人
+\subsection{primary Stakeholders}
+Customers:决定主要需求和项目范畴以及与主要负责人签订合同
+
+Project Manager: 控制整个项目的生产过程，考虑所有利益相关者的利益和需求，按时用预算创建有力产品，
+监管生产过程，做必要的协调。
+
+Business Analysts: 一个商业分析者分析客户的想法，和开发团队沟通并且确定项目范畴和需求。
+
+Development Team： 负责按时交付和测试软件
+
+Quality assurance: 创建并且运行测试，找出bug，并且提供反馈
+
+UI\&UX designers: 让产品的交互界面对用户友好并且易懂，让客户很快且容易地满足需求
+
+End-users: 用户的需求影响系统的设计和功能。使用者可以被聚集起来作为测试产品的第二道，提供最初始的反馈。他们可以指出产品缺少的功能并且给用户体验做出贡献。
+
+Government：采用有监管力的国际标准，对不遵守规定的软件罚款。
+
+Competitors: 研发新功能并且影响市场趋势，带来新挑战。
+
+\subsection{需求的种类}
+从高到低：
+
+商业角度：主要用途，为什么它被需要，以及它的使用范畴，可以得到什么商业效益，感兴趣的用户
+
+愿景（vision）
+
+用户角度：使用样例，用户场景，用户故事
+
+系统需求：分为功能性和非功能性需求
+
+例：
+
+便利校园
+
+方便身份检验  方便食堂就餐  方便借书
+
+方便食堂就餐：方便充值 方便查询余额以及消费历史
+
+方便借书： 有借书机器
+\subsubsection{功能性需求}
+功能性需求是系统应该提供的最基本功能
+
+代表了系统输入，应有的操作和所需要的输出
+
+用户可以直接看到的产品
+
+例：
+
+系统应提供的服务：按照关键字检索图书
+
+针对特定输入的相应：对于格式不正确的身份证号提示并请重新输入
+
+在特定情形下的行为： 用户5分钟无操作自动锁屏
+
+不应做什么：不允许尝试密码输入三次以上
+
+\subsubsection{non-functional requirement}
+非功能性需求表示与系统功能无关的部分
+
+决定了软件的质量属性
+
+决定了系统的行为和基本特征以及影响用户体验的特点
+
+例：
+
+性能（performance）： 联机刷卡应该在5s内返回结果
+
+可靠性（reliability）：系统整体可靠性要达到99.99\%以上
+
+安全性（securi）：系统应确保手机支付充值账户和密码不会被泄露和盗用
+
+易用性（usability）：用户根据提示学会手机支付充值时间不超过10分钟
+
+产品约束（product constrains）：软件系统要在已有的几台服务器上运行并使用Linux系统
+
+过程约束（process constrains）: 软件系统应该在5个月内交付并严格遵循给定的过程规范
+
+\subsection{requirement analysis in scrum}
+\subsubsection{user story example}
+as a
+
+registered user
+
+i want to 
+
+change my password
+
+so i can 
+
+keep my account secure
+
+\clearpage
+
+\section*{导航}
+\label{sec:navigation}
+
+在这里，你可以添加一些导航链接，如链接到、\hyperref[subsec:sub]{子节}、\hyperref[sec:second]{第二节}等。
+
+\end{document}
