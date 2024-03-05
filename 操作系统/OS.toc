@@ -1,6 +1,6 @@
 \contentsline {section}{\numberline {1}操作系统的介绍}{3}{section.1}%
 \contentsline {subsection}{\numberline {1.1} 当程序运行时发生了什么 }{3}{subsection.1.1}%
-\contentsline {subsection}{\numberline {1.2}操作系统的各种称呼（目标都是为了更好用）}{3}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.2}操作系统的各种称呼（目标都是为了更好用）}{4}{subsection.1.2}%
 \contentsline {subsection}{\numberline {1.3}三个主题}{4}{subsection.1.3}%
 \contentsline {subsubsection}{\numberline {1.3.1}Persistence}{4}{subsubsection.1.3.1}%
 \contentsline {subsubsection}{\numberline {1.3.2}Concurrency}{4}{subsubsection.1.3.2}%
@@ -63,4 +63,12 @@
 \contentsline {subsection}{\numberline {7.1}同步}{17}{subsection.7.1}%
 \contentsline {subsection}{\numberline {7.2}互斥}{17}{subsection.7.2}%
 \contentsline {subsubsection}{\numberline {7.2.1}禁止中断}{18}{subsubsection.7.2.1}%
-\contentsline {subsubsection}{\numberline {7.2.2}设置专用机器指令}{18}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.2}设置专用机器指令 TSL}{18}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}忙等}{18}{subsubsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.4}死锁}{18}{subsubsection.7.2.4}%
+\contentsline {subsubsection}{\numberline {7.2.5}饥饿}{19}{subsubsection.7.2.5}%
+\contentsline {subsubsection}{\numberline {7.2.6}原语 primitive}{20}{subsubsection.7.2.6}%
+\contentsline {subsection}{\numberline {7.3}软件方法解决进程互斥}{20}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}信号量 Semaphore}{20}{subsection.7.4}%
+\contentsline {subsubsection}{\numberline {7.4.1}整型信号量}{20}{subsubsection.7.4.1}%
+\contentsline {subsubsection}{\numberline {7.4.2}结构型信号量}{20}{subsubsection.7.4.2}%
