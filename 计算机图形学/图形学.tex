@@ -20,10 +20,17 @@
 \subsection{逻辑设备和排队族}
 选好用什么硬件后需要构建VkDevice(logical device)，来选择更多特性，比如多视图渲染和64比特浮点数。
 
-你也需要确定
+你也需要确定要使用哪个队列，大部分像绘画和储存的命令被提交到队列当中异步执行，随后被分配到特定功能的队列簇中。
+
+\subsection{窗口界面和转换链}
+我们需要使用窗口代表渲染的图像，两种组件渲染图像到窗口：窗口表面VkSurfaceKHR和VkswapchainKHR交换链
+
+KHR前缀意味着Vulkan的拓展。
 
 
-\subsection{window 窗口和转换链}
+
+
+
 \subsection{图像查看和结构缓冲}
 \subsection{渲染管线}
 \subsection{图像管道}
